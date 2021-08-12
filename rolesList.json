@@ -1,0 +1,1 @@
+[{"username":"Admin","permissions":{"Server":["Read","Write","Delete"],"Database":["Read","Write","Delete"],"Dashboard":["Read","Write","Delete"]}},{"username":"User1","permissions":{"Server":["Read","Write","Delete"],"Dashboard":["Read"],"Database":["Read","Write"]}}]
