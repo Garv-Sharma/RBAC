@@ -1,3 +1,6 @@
+/**
+ * Helper file to perform authentication as well as access & modify files/database (implements abstraction)
+ */
 var fs = require('fs')
 
 function loadUserList(){
@@ -32,13 +35,13 @@ function authenticateUser(name, password){
     return user["password"] == password
 }
 
-
 function saveUserList(list){
     const newList = JSON.stringify(list)
     fs.writeFileSync('userList.json', newList)
 }
 
 function createNewUser(name, password){
+    // we have already checked for duplicate user in the prompt
     const users = loadUserList()
     users.push({
         "username": name,
@@ -88,6 +91,10 @@ function getUserRoles(name){
 
 function printRoles(roles){
     console.log(`The current roles assigned are:`)
+    if(Object.keys(roles).length == 0){
+        console.log('There are no roles assigned to you!')
+        return
+    }
     for(const resource of Object.keys(roles)){
         console.log(`${resource}:`)
         for(const permission of roles[resource]){

@@ -10,10 +10,10 @@ const {
     editUserRole 
 } = require('./utils')
 
-
 //------- START -------//
 console.log('Hi! Welcome to Role Based Access Control System')
 
+// set of questions for login credentials
 const user_login = [
     {
         type: 'input',
@@ -59,6 +59,7 @@ function main(){
                 inquirer.prompt(admin_actions).then((response) => {
                     // console.log(`You have chosen to: "${response.action}"`)
 
+                    // perform actions or follow up prompt based on user selection
                     if(response.action == 'Login as another user'){
                         main()
                     }
@@ -77,17 +78,13 @@ function main(){
                                 type: 'password',
                                 name: 'password',
                                 message: "Please provide password for user",
-                                mask: '*',
-                                validate(value){
-                                    if(true)  return true
-                                    return 'Password should be atleast 8 digits & consisting of letters & numbers'
-                                }
+                                mask: '*'
                             }
                         ]
-                        inquirer.prompt(add_user).then((response) => {
-                            const new_user = response.new_user_name
-                            // create user in userList:
-                            createNewUser(new_user, response.password)
+                        inquirer.prompt(add_user).then((newUser) => {
+                            const new_user = newUser.new_user_name
+                            // create user in userList
+                            createNewUser(new_user, newUser.password)
 
                             var roles = {}
                             var user_access = [
@@ -123,12 +120,14 @@ function main(){
                                 inquirer.prompt(user_access).then((response) => {
                                     roles[response.resource] = response.permission
                                     if (response.askAgain) {
-                                        // remove resource from the list which has already been selected once
+                                        // remove resource from the list which have already been selected once
                                         user_access[0].choices = user_access[0].choices.filter(item => item!=response.resource)
 
                                         if(user_access[0].choices.length == 0){
                                             console.log('No more resources left')
-                                            editUserRole(user, roles)
+                                            // insert into our rolesList
+                                            editUserRole(new_user, roles)
+                                            console.log(`User ${new_user} creared successfully`)
                                             printRoles(roles)
                                         }
                                         else
@@ -190,7 +189,7 @@ function main(){
                                     default: true,
                                 },
                             ]
-                            
+                            // existing roles will be deleted 
                             function ask() {
                                 inquirer.prompt(user_access).then((response) => {
                                     roles[response.resource] = response.permission
@@ -200,6 +199,7 @@ function main(){
 
                                         if(user_access[0].choices.length == 0){
                                             console.log('No more resources left')
+                                            // update rolesList
                                             editUserRole(user, roles)
                                             printRoles(roles)
                                         }
@@ -251,7 +251,7 @@ function main(){
                             {
                                 type: 'checkbox',
                                 name: 'resource',
-                                message: 'Select resources for which you want to check access',
+                                message: 'Select resources for which you want to check your access',
                                 choices: [
                                     'Server', 
                                     'Database',
