@@ -1,5 +1,4 @@
 ABOUT:
-* Problem Statement: https://github.com/bluestacks/backend-developer-assignment
 * This is a basic command-line based implementation of a Role Based Access Control System which is a security mechanism used to restrict access to any authorized system. It involves creating user roles & assigning them different access permissions/levels to resources of a system. This protects sensitive data & ensures only designated employees/customers can access the specificed resources.
 
 Entities:
